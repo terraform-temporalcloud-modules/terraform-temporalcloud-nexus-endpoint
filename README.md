@@ -6,12 +6,6 @@
 Terraform module which creates a [Temporal Cloud](https://temporal.io/cloud) Nexus endpoint — the
 routing entry that lets workflows in one namespace call a service served by workers in another.
 
-Both badges report the state of `main`. **CI** covers formatting, linting,
-documentation and `terraform validate`, and runs on every pull request and again
-after merge. **Apply Tests** creates and destroys real namespaces and endpoints
-against a live Temporal Cloud account, weekly and on demand — the only check that
-proves the API accepts what this module sends.
-
 ## Namespace IDs, not namespace names
 
 **This is the one thing to get right.** An endpoint names namespaces on both sides — the callers that
