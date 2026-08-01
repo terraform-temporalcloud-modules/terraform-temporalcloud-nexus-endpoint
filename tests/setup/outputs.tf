@@ -1,9 +1,9 @@
 output "endpoint_name" {
-  description = "Unique Nexus endpoint name for this test run, prefixed `yulei-tftest-` so leftovers from an interrupted run are identifiable in the Temporal Cloud account"
+  description = "Unique Nexus endpoint name for this test run, prefixed `yulei-tftest-nxs-` so leftovers from an interrupted run are identifiable in the Temporal Cloud account"
   # `yulei-` identifies the owner, `tftest-` distinguishes test resources from
   # anything created by hand. Satisfies the provider's constraint: starts with a
   # letter, letters, digits and hyphens only, no trailing hyphen.
-  value = "yulei-tftest-${random_pet.this.id}"
+  value = "yulei-tftest-nxs-${random_pet.this.id}"
 }
 
 output "target_namespace_id" {

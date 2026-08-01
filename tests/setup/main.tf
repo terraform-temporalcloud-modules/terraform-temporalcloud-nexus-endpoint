@@ -26,7 +26,7 @@ locals {
   # Sorted so repeat runs pick the same region and results stay comparable.
   region = sort([for r in data.temporalcloud_regions.available.regions : r.id])[0]
 
-  base_name = "yulei-tftest-${random_pet.this.id}"
+  base_name = "yulei-tftest-nxs-${random_pet.this.id}"
 }
 
 # The namespace whose workers would serve the endpoint. Nothing polls the task
