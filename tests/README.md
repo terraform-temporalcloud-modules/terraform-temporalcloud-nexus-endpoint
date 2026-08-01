@@ -18,6 +18,7 @@ way to catch the API rejecting a configuration that type-checks.
 | --- | --- |
 | `nexus_endpoint.tftest.hcl` | Create with a description, one caller and a worker target; update in place to a second caller, a different task queue and a new description; then the `wrappers` submodule with two endpoints from one call |
 | `disabled.tftest.hcl` | `create_nexus_endpoint = false` creates nothing and every output falls back |
+| `validation.tftest.hcl` | Plan-only. Each variable validation refuses the value it is meant to refuse. Variable validation runs before the provider is configured, so these blocks never reach the API and create nothing |
 
 Fixtures: `setup/` generates unique names, selects a region the account is
 entitled to, and creates the two namespaces the endpoint routes between.
@@ -66,6 +67,25 @@ outside what Terraform can assert:
 - **That an unlisted caller is rejected.** Same reason: proving it requires making
   a real Nexus call.
 
+## Access this suite needs beyond `TEMPORAL_CLOUD_API_KEY`
+
+No external service, credential or third-party account. Everything the suite touches is a
+Temporal Cloud resource reached with that one key, so a maintainer with a scratch account key can run
+the whole thing.
+
+Two things are properties of the *account* behind the key rather than extra credentials, and without
+them the suite cannot run at all:
+
+| Needed | Why | Without it |
+| --- | --- | --- |
+| At least one entitled region | `setup/` reads `temporalcloud_regions` and takes the first, rather than hardcoding one — region entitlements are per account | `setup/` fails on an empty region list, and every run block after it skips |
+| Headroom for two namespaces | `setup/` creates a target and a caller namespace on every run; an endpoint cannot exist without both | Namespace creation is refused and no endpoint coverage runs |
+
+Nothing in this module's surface is untestable for want of access. The two behaviours that stay
+unverified — that a caller can actually reach the service, and that an unlisted caller is rejected —
+need a running worker and a real Nexus call, not extra permissions. See "What is not covered on
+apply" above.
+
 ## Running the apply tests
 
 ```bash
@@ -81,7 +101,7 @@ Without a key, every run block is skipped — a cheap way to confirm the test fi
 parse:
 
 ```text
-Failure! 0 passed, 0 failed, 5 skipped.
+Failure! 0 passed, 0 failed, 9 skipped.
 ```
 
 ## Cleaning up leftovers

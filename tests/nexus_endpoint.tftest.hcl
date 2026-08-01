@@ -187,8 +187,17 @@ run "create_many" {
   }
 
   assert {
+    // nonsensitive() around the count: `output.wrapper` aggregates the sensitive
+    // description, so an error message interpolating it unguarded is suppressed
+    // by Terraform — exactly when the assertion fails and the number is wanted.
     condition     = length(output.wrapper) == 2
-    error_message = "expected 2 endpoints from the wrapper, got ${length(output.wrapper)}"
+    error_message = "expected 2 endpoints from the wrapper, got ${nonsensitive(length(output.wrapper))}"
+  }
+
+  // Two distinct endpoints, not one rendered under two keys.
+  assert {
+    condition     = output.wrapper["orders"].nexus_endpoint_id != output.wrapper["shipping"].nexus_endpoint_id
+    error_message = "the wrapper produced a single endpoint under two keys"
   }
 
   assert {
@@ -203,9 +212,30 @@ run "create_many" {
   }
 
   // Per-item values override the defaults rather than merging with them.
+  //
+  // The length and the contents are both asserted, and both are needed. The
+  // default and the override are one namespace each, so a length of 1 holds
+  // whether the override won or was ignored entirely — it rules out a merge and
+  // nothing else. The contains() pair below is what pins down which one won.
   assert {
     condition     = length(output.wrapper["shipping"].nexus_endpoint_allowed_caller_namespaces) == 1
     error_message = "the shipping item merged the defaults instead of overriding them"
+  }
+
+  assert {
+    condition     = contains(output.wrapper["shipping"].nexus_endpoint_allowed_caller_namespaces, run.setup.target_namespace_id)
+    error_message = "the shipping item's own allowed_caller_namespaces did not reach the module"
+  }
+
+  assert {
+    condition     = !contains(output.wrapper["shipping"].nexus_endpoint_allowed_caller_namespaces, run.setup.caller_namespace_id)
+    error_message = "the shipping item took defaults.allowed_caller_namespaces instead of its own value"
+  }
+
+  // Per-item worker_target reaches each item, and the two are not cross-wired.
+  assert {
+    condition     = output.wrapper["orders"].nexus_endpoint_target_task_queue == "orders-nexus"
+    error_message = "per-item worker_target did not reach the orders item"
   }
 
   assert {
