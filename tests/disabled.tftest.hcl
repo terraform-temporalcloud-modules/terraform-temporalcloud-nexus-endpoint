@@ -10,12 +10,23 @@ provider "temporalcloud" {}
 run "creates_nothing" {
   variables {
     create_nexus_endpoint = false
+
+    // `name`, `worker_target` and `allowed_caller_namespaces` are required by
+    // the provider and therefore by this module, so Terraform demands them even
+    // though the switched-off module reads none of them. The placeholders below
+    // are the smallest values that satisfy the module's format validations.
+    name = ""
+
+    worker_target = {
+      namespace_id = "unused.unused"
+      task_queue   = "unused"
+    }
+
+    allowed_caller_namespaces = []
   }
 
   // Every output is count-gated behind try(); these assertions prove the
   // fallbacks evaluate rather than erroring when the module is switched off.
-  // They also prove the worker_target validations tolerate a null object, which
-  // is only valid in this state.
   assert {
     condition     = output.nexus_endpoint_id == ""
     error_message = "nexus_endpoint_id should fall back to empty when create_nexus_endpoint = false"

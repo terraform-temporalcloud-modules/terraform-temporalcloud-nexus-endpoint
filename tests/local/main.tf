@@ -47,12 +47,24 @@ module "all_inputs" {
 }
 
 # The create flag off: proves the module produces no resources and that every
-# output still evaluates via its try() fallback. Also proves the validations
-# tolerate a null worker_target, which is only valid in this state.
+# output still evaluates via its try() fallback.
+#
+# The three provider-required inputs are still passed. Terraform requires them
+# whatever `create_nexus_endpoint` says, so these placeholders are what a
+# switched-off call has to look like.
 module "disabled" {
   source = "../../"
 
   create_nexus_endpoint = false
+
+  name = ""
+
+  worker_target = {
+    namespace_id = "unused.unused"
+    task_queue   = "unused"
+  }
+
+  allowed_caller_namespaces = []
 }
 
 # Minimum viable call: only the inputs the resource actually requires.

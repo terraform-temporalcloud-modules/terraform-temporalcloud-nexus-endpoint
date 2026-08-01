@@ -9,9 +9,8 @@ variable "create_nexus_endpoint" {
 ################################################################################
 
 variable "name" {
-  description = "The name of the Nexus endpoint. Must be unique within the account, start with a letter, end with a letter or digit, and contain only letters, digits and hyphens. Underscores are not accepted. Required unless `create_nexus_endpoint` is `false`"
+  description = "The name of the Nexus endpoint. Must be unique within the account, start with a letter, end with a letter or digit, and contain only letters, digits and hyphens. Underscores are not accepted"
   type        = string
-  default     = ""
 
   # Mirrors the provider's constraint so a malformed name fails during plan
   # rather than after a round trip to the Temporal Cloud API.
@@ -22,15 +21,14 @@ variable "name" {
 }
 
 variable "worker_target" {
-  description = "Where the endpoint routes incoming Nexus requests: the namespace whose workers serve them, and the task queue they poll. Both keys are required. `namespace_id` is a namespace **ID** in the form `<namespace>.<account_id>` — the `id` attribute of `temporalcloud_namespace`, not the namespace name — and must be in the same account as the endpoint. `task_queue` cannot be empty. Required unless `create_nexus_endpoint` is `false`"
+  description = "Where the endpoint routes incoming Nexus requests: the namespace whose workers serve them, and the task queue they poll. Both keys are required. `namespace_id` is a namespace **ID** in the form `<namespace>.<account_id>` — the `id` attribute of `temporalcloud_namespace`, not the namespace name — and must be in the same account as the endpoint. `task_queue` cannot be empty"
   type = object({
     namespace_id = string
     task_queue   = string
   })
-  default = null
 
-  # try() supplies a placeholder that passes, so a null `worker_target` — valid
-  # when `create_nexus_endpoint` is `false` — does not trip this check.
+  # try() guards the regex rather than the value: a null object would otherwise
+  # raise `Invalid function argument` instead of reporting this rule.
   validation {
     condition     = can(regex("^[^.]+\\.[^.]+$", try(var.worker_target.namespace_id, "namespace.account")))
     error_message = "worker_target.namespace_id must be a namespace ID in the form `<namespace>.<account_id>`, for example `orders-prod.a1b2c`. A bare namespace name is not a namespace ID. Use the `namespace_id` output of the namespace module, or the `id` attribute of a `temporalcloud_namespace` resource or data source."
@@ -43,9 +41,8 @@ variable "worker_target" {
 }
 
 variable "allowed_caller_namespaces" {
-  description = "Namespace IDs permitted to call this endpoint, each in the form `<namespace>.<account_id>`. Callers not listed here are rejected, so an empty set permits none. A namespace that calls its own endpoint must still be listed. Required unless `create_nexus_endpoint` is `false`"
+  description = "Namespace IDs permitted to call this endpoint, each in the form `<namespace>.<account_id>`. Callers not listed here are rejected, so an empty set permits none. A namespace that calls its own endpoint must still be listed"
   type        = set(string)
-  default     = []
 
   validation {
     condition = alltrue([

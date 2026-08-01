@@ -14,7 +14,7 @@ This directory sources the module by relative path (`../../`) and passes **every
 | Module call | What it proves |
 | --- | --- |
 | `all_inputs` | Every input the module accepts is still valid |
-| `disabled` | `create_nexus_endpoint = false` produces no resources, every output falls back via `try()`, and the `worker_target` validations tolerate a null object |
+| `disabled` | `create_nexus_endpoint = false` produces no resources and every output falls back via `try()`, with the provider-required inputs still supplied as placeholders |
 | `minimal` | The module works with only `name`, `worker_target` and `allowed_caller_namespaces` |
 | `wrapper` | `wrappers/` accepts `defaults` / `items` and passes them through |
 

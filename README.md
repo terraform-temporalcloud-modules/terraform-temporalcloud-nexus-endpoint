@@ -55,51 +55,18 @@ account** as the endpoint.
 
 ## Which inputs are required
 
-The generated table further down reports every input as `Required: no`. That is an artefact of the
-`create_nexus_endpoint` gate rather than the truth — see [the note at the end of this
-section](#why-the-generated-table-says-required-no). What an endpoint actually needs:
-
-### Always required
-
-With `create_nexus_endpoint` at its default of `true`, all three of these must be set. `terraform
-validate` does not catch a missing one — use `terraform plan`.
-
-| Input | What it decides | Left out |
-| --- | --- | --- |
-| `name` | What callers address the endpoint by | The module's `""` placeholder is a value, not an omission, so nothing rejects it locally. An empty name does not match the pattern an endpoint name must have, so creation fails |
-| `worker_target` | Which namespace's workers serve requests, and on which task queue | The provider refuses the configuration: `Must set a configuration value for the worker_target attribute as the provider has marked it as required` |
-| `allowed_caller_namespaces` | Which namespaces may call the endpoint | The `[]` placeholder is likewise a value, so this one fails quietly rather than loudly: no error, and no namespace is permitted to call the endpoint |
-
-`create_nexus_endpoint = false` removes all three requirements — the module declares no resource and
-every output falls back to an empty value.
-
-### Required keys inside `worker_target`
-
-The generated table shows `worker_target`'s type but not which of its keys may be dropped. Neither may:
+The generated [Inputs](#inputs) table marks `name`, `worker_target` and `allowed_caller_namespaces` as
+required, and they are — Terraform refuses a call that omits any of them, including one that sets
+`create_nexus_endpoint = false`. What the table cannot express is the rule inside `worker_target`:
 
 | Key | Form |
 | --- | --- |
 | `namespace_id` | A namespace ID, `<namespace>.<account_id>`, never a bare namespace name. Must be in the same account as the endpoint |
 | `task_queue` | The task queue the target namespace's Nexus workers poll. Cannot be empty |
 
-Both are checked by this module during plan, as is every entry in `allowed_caller_namespaces` — see
-[Namespace IDs, not namespace names](#namespace-ids-not-namespace-names). A bare name or an empty task
-queue therefore fails before the API is contacted.
-
-### Optional
-
-| Input | If omitted |
-| --- | --- |
-| `description` | The endpoint has no description. Whatever you set is redacted from Terraform's output, because the provider marks the attribute sensitive — see [Notes](#notes) |
-| `timeouts` | The provider's own defaults apply: 10 minutes to create, 5 minutes to delete |
-| `create_nexus_endpoint` | The endpoint is created |
-
-### Why the generated table says `Required: no`
-
-The `create_nexus_endpoint` gate lets a consumer switch this module off in place, which means every
-input needs a Terraform default — `""`, `[]` or `null` — including the three the provider marks
-required. terraform-docs reports on the presence of a default, so it renders all of them as optional.
-This section is the authority on what a created endpoint needs.
+Neither may be dropped. Both are checked by this module during plan, as is every entry in
+`allowed_caller_namespaces` — see [Namespace IDs, not namespace names](#namespace-ids-not-namespace-names).
+A bare name or an empty task queue therefore fails before the API is contacted.
 
 ## Usage
 
@@ -283,12 +250,12 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_allowed_caller_namespaces"></a> [allowed\_caller\_namespaces](#input\_allowed\_caller\_namespaces) | Namespace IDs permitted to call this endpoint, each in the form `<namespace>.<account_id>`. Callers not listed here are rejected, so an empty set permits none. A namespace that calls its own endpoint must still be listed. Required unless `create_nexus_endpoint` is `false` | `set(string)` | `[]` | no |
+| <a name="input_allowed_caller_namespaces"></a> [allowed\_caller\_namespaces](#input\_allowed\_caller\_namespaces) | Namespace IDs permitted to call this endpoint, each in the form `<namespace>.<account_id>`. Callers not listed here are rejected, so an empty set permits none. A namespace that calls its own endpoint must still be listed | `set(string)` | n/a | yes |
 | <a name="input_create_nexus_endpoint"></a> [create\_nexus\_endpoint](#input\_create\_nexus\_endpoint) | Controls if the Nexus endpoint should be created. Set to `false` to disable the module without removing the call | `bool` | `true` | no |
 | <a name="input_description"></a> [description](#input\_description) | Optional description of the endpoint, shown in the Temporal Cloud UI. The endpoint has no description when omitted. The provider marks this attribute sensitive, so Terraform redacts it from plan and apply output and the module's `nexus_endpoint_description` output is sensitive in turn. It is not treated as a secret by Temporal Cloud | `string` | `null` | no |
-| <a name="input_name"></a> [name](#input\_name) | The name of the Nexus endpoint. Must be unique within the account, start with a letter, end with a letter or digit, and contain only letters, digits and hyphens. Underscores are not accepted. Required unless `create_nexus_endpoint` is `false` | `string` | `""` | no |
+| <a name="input_name"></a> [name](#input\_name) | The name of the Nexus endpoint. Must be unique within the account, start with a letter, end with a letter or digit, and contain only letters, digits and hyphens. Underscores are not accepted | `string` | n/a | yes |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Optional create and delete timeouts, as duration strings such as `30s` or `2h45m`. The provider's own defaults — 10 minutes to create, 5 minutes to delete — apply to whichever is omitted | <pre>object({<br/>    create = optional(string)<br/>    delete = optional(string)<br/>  })</pre> | `{}` | no |
-| <a name="input_worker_target"></a> [worker\_target](#input\_worker\_target) | Where the endpoint routes incoming Nexus requests: the namespace whose workers serve them, and the task queue they poll. Both keys are required. `namespace_id` is a namespace **ID** in the form `<namespace>.<account_id>` — the `id` attribute of `temporalcloud_namespace`, not the namespace name — and must be in the same account as the endpoint. `task_queue` cannot be empty. Required unless `create_nexus_endpoint` is `false` | <pre>object({<br/>    namespace_id = string<br/>    task_queue   = string<br/>  })</pre> | `null` | no |
+| <a name="input_worker_target"></a> [worker\_target](#input\_worker\_target) | Where the endpoint routes incoming Nexus requests: the namespace whose workers serve them, and the task queue they poll. Both keys are required. `namespace_id` is a namespace **ID** in the form `<namespace>.<account_id>` — the `id` attribute of `temporalcloud_namespace`, not the namespace name — and must be in the same account as the endpoint. `task_queue` cannot be empty | <pre>object({<br/>    namespace_id = string<br/>    task_queue   = string<br/>  })</pre> | n/a | yes |
 
 ## Outputs
 
