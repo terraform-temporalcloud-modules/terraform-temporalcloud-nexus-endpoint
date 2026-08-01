@@ -62,8 +62,7 @@ section](#why-the-generated-table-says-required-no). What an endpoint actually n
 ### Always required
 
 With `create_nexus_endpoint` at its default of `true`, all three of these must be set. `terraform
-validate` does not catch a missing one: the values reach the resource through variables, and checks on
-values that are not yet known are skipped.
+validate` does not catch a missing one — use `terraform plan`.
 
 | Input | What it decides | Left out |
 | --- | --- | --- |
