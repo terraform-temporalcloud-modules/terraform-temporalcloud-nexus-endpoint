@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/compare/v1.0.3...v1.0.4) (2026-08-01)
+
+### Documentation
+
+* Trim the validate explanation to what a consumer needs ([738f9dd](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/commit/738f9ddf61a9c99af5c147b1ada6b9a30788c63c))
+
 ## [1.0.3](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/compare/v1.0.2...v1.0.3) (2026-08-01)
 
 ### Documentation
