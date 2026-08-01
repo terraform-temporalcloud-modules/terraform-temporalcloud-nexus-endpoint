@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/compare/v1.0.0...v1.0.1) (2026-08-01)
+
+### Bug Fixes
+
+* Mark the wrapper output sensitive and null-guard the description ([79549ba](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/commit/79549ba3eb2fe411ce1baec6a6941a33e8d7303f))
+
 ## 1.0.0 (2026-08-01)
 
 ### Features
