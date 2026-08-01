@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/compare/v1.0.2...v1.0.3) (2026-08-01)
+
+### Documentation
+
+* Drop the badge explanation from the README ([1e2aee3](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/commit/1e2aee398de4c92acd72235a3d277bc64001b325))
+
 ## [1.0.2](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/compare/v1.0.1...v1.0.2) (2026-08-01)
 
 ## [1.0.1](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/compare/v1.0.0...v1.0.1) (2026-08-01)
