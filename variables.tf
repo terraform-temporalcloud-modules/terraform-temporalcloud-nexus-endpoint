@@ -33,7 +33,7 @@ variable "worker_target" {
   # when `create_nexus_endpoint` is `false` — does not trip this check.
   validation {
     condition     = can(regex("^[^.]+\\.[^.]+$", try(var.worker_target.namespace_id, "namespace.account")))
-    error_message = "worker_target.namespace_id must be a namespace ID in the form `<namespace>.<account_id>`, for example `orders-prod.a1b2c`. A bare namespace name is rejected by the API. Use the `namespace_id` output of the namespace module, or the `id` attribute of a `temporalcloud_namespace` resource or data source."
+    error_message = "worker_target.namespace_id must be a namespace ID in the form `<namespace>.<account_id>`, for example `orders-prod.a1b2c`. A bare namespace name is not a namespace ID. Use the `namespace_id` output of the namespace module, or the `id` attribute of a `temporalcloud_namespace` resource or data source."
   }
 
   validation {
@@ -51,7 +51,7 @@ variable "allowed_caller_namespaces" {
     condition = alltrue([
       for id in var.allowed_caller_namespaces : can(regex("^[^.]+\\.[^.]+$", id))
     ])
-    error_message = "Every entry in allowed_caller_namespaces must be a namespace ID in the form `<namespace>.<account_id>`, for example `web-prod.a1b2c`. A bare namespace name is rejected by the API."
+    error_message = "Every entry in allowed_caller_namespaces must be a namespace ID in the form `<namespace>.<account_id>`, for example `web-prod.a1b2c`. A bare namespace name is not a namespace ID."
   }
 }
 

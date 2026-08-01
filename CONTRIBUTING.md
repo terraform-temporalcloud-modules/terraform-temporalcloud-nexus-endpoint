@@ -73,7 +73,8 @@ the root module, add the matching line to the wrapper in the same change.
 
 1. **Both sides of the endpoint are namespace IDs, not names.** `worker_target.namespace_id` and every
    entry in `allowed_caller_namespaces` must be `<namespace>.<account_id>`. A bare namespace name
-   type-checks and is rejected by the API. The module validates the shape during plan, and
+   type-checks but is not a namespace ID, and the provider applies no validator of its own — so this
+   module checks the shape during plan, and
    `nexus_endpoint.tftest.hcl` asserts the value that comes back is the ID and *not* the bare name — so
    the assumption fails loudly if the provider ever changes it.
 2. **A namespace is not implicitly allowed to call its own endpoint.** The target namespace has to

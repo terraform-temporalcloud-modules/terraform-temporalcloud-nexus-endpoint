@@ -15,16 +15,18 @@ proves the API accepts what this module sends.
 ## Namespace IDs, not namespace names
 
 **This is the one thing to get right.** An endpoint names namespaces on both sides — the callers that
-may reach it, and the target whose workers serve it — and every one of them is a namespace **ID** in
-the form `<namespace>.<account_id>`:
+may reach it, and the target whose workers serve it — and every one of them is a namespace **ID**. A
+[Namespace Id](https://docs.temporal.io/cloud/namespaces) is the Namespace Name, a period, and the
+Account ID:
 
 ```text
 payments-prod.a1b2c
 └── namespace name  └── account ID
 ```
 
-A bare namespace name (`payments-prod`) looks correct, type-checks, and is rejected. Read the ID from
-whatever manages the namespace rather than typing it:
+A bare namespace name (`payments-prod`) looks correct and type-checks, but it is not a namespace ID —
+it identifies nothing outside your own account. Read the ID from whatever manages the namespace rather
+than typing it:
 
 | Source | Expression |
 | --- | --- |
@@ -33,7 +35,8 @@ whatever manages the namespace rather than typing it:
 | A namespace managed elsewhere | `data.temporalcloud_namespace.payments.id` |
 | The Temporal Cloud UI | the namespace's **Namespace ID**, not its name |
 
-This module validates the shape during plan, so a bare name fails before the API is contacted:
+The provider does not check the shape, so this module does, during plan — a bare name fails before the
+API is contacted:
 
 ```text
 Error: Invalid value for variable
@@ -67,7 +70,9 @@ module "payments_namespace" {
   source  = "terraform-temporalcloud-modules/namespace/temporalcloud"
   version = "~> 1.0"
 
-  name           = "payments-prod"
+  name = "payments-prod"
+  # Region entitlements are per account and are a subset of the published list,
+  # so check `data.temporalcloud_regions` before copying this one.
   regions        = ["aws-us-east-1"]
   retention_days = 30
   api_key_auth   = true
@@ -161,7 +166,7 @@ Provider and Temporal Cloud behaviours worth knowing before you plan:
 
 - **An endpoint is routing configuration, nothing more.** Creating it does not make the service
   available. A worker in the target namespace must poll `worker_target.task_queue` and register a Nexus
-  service; until it does, callers get an unimplemented error rather than a configuration error.
+  service; until it does, calls fail at runtime rather than at apply.
 - **`description` is marked sensitive by the provider.** Terraform redacts it from plan and apply
   output, and this module's `nexus_endpoint_description` output is `sensitive = true` as a result. Read
   it with `terraform output -raw nexus_endpoint_description`, or `nonsensitive()` in an expression. It

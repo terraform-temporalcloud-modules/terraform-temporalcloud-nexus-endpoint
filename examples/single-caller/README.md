@@ -8,7 +8,7 @@ is owned by a service team. Each ID is looked up with `data.temporalcloud_namesp
 misspelled ID fails at plan rather than at apply.
 
 Both IDs are of the form `<namespace>.<account_id>` — for example `payments-prod.a1b2c`. A bare
-namespace name is rejected.
+namespace name is not a namespace ID.
 
 ## Usage
 

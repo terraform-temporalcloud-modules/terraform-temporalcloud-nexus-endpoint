@@ -5,10 +5,12 @@ and the Nexus endpoint that routes between them.
 
 Both sides of the endpoint are namespace **IDs**, in the form `<namespace>.<account_id>`. They come
 from the namespace module's `namespace_id` output rather than being typed by hand, which is the point
-of the example: a bare namespace name looks correct and is rejected by the API.
+of the example: a bare namespace name looks correct but identifies nothing.
 
-The `regions` values must be ones your account is entitled to use — see
-[Choosing regions](../../README.md#choosing-regions) if apply reports an invalid region.
+The `regions` values must be ones your account is entitled to use, which is a subset of the published
+list. Read `data.temporalcloud_regions` for your account's, or see
+[Choosing regions](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-namespace#choosing-regions)
+in the namespace module, if apply reports an invalid region.
 
 ## Usage
 
