@@ -22,7 +22,7 @@ variable "name" {
 }
 
 variable "worker_target" {
-  description = "Where the endpoint routes incoming Nexus requests: the namespace whose workers serve them, and the task queue they poll. `namespace_id` is a namespace **ID** in the form `<namespace>.<account_id>` — the `id` attribute of `temporalcloud_namespace`, not the namespace name — and must be in the same account as the endpoint. Required unless `create_nexus_endpoint` is `false`"
+  description = "Where the endpoint routes incoming Nexus requests: the namespace whose workers serve them, and the task queue they poll. Both keys are required. `namespace_id` is a namespace **ID** in the form `<namespace>.<account_id>` — the `id` attribute of `temporalcloud_namespace`, not the namespace name — and must be in the same account as the endpoint. `task_queue` cannot be empty. Required unless `create_nexus_endpoint` is `false`"
   type = object({
     namespace_id = string
     task_queue   = string
@@ -43,7 +43,7 @@ variable "worker_target" {
 }
 
 variable "allowed_caller_namespaces" {
-  description = "Namespace IDs permitted to call this endpoint, each in the form `<namespace>.<account_id>`. Callers not listed here are rejected. A namespace that calls its own endpoint must still be listed. Required unless `create_nexus_endpoint` is `false`"
+  description = "Namespace IDs permitted to call this endpoint, each in the form `<namespace>.<account_id>`. Callers not listed here are rejected, so an empty set permits none. A namespace that calls its own endpoint must still be listed. Required unless `create_nexus_endpoint` is `false`"
   type        = set(string)
   default     = []
 
@@ -56,13 +56,13 @@ variable "allowed_caller_namespaces" {
 }
 
 variable "description" {
-  description = "Description of the endpoint, shown in the Temporal Cloud UI. The provider marks this attribute sensitive, so Terraform redacts it from plan and apply output and the module's `nexus_endpoint_description` output is sensitive in turn. It is not treated as a secret by Temporal Cloud"
+  description = "Optional description of the endpoint, shown in the Temporal Cloud UI. The endpoint has no description when omitted. The provider marks this attribute sensitive, so Terraform redacts it from plan and apply output and the module's `nexus_endpoint_description` output is sensitive in turn. It is not treated as a secret by Temporal Cloud"
   type        = string
   default     = null
 }
 
 variable "timeouts" {
-  description = "Create and delete timeouts, as duration strings such as `30s` or `2h45m`"
+  description = "Optional create and delete timeouts, as duration strings such as `30s` or `2h45m`. The provider's own defaults — 10 minutes to create, 5 minutes to delete — apply to whichever is omitted"
   type = object({
     create = optional(string)
     delete = optional(string)
