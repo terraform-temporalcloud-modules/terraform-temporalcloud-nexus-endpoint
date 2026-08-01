@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/compare/v1.0.4...v2.0.0) (2026-08-01)
+
+### ⚠ BREAKING CHANGES
+
+* name, worker_target and allowed_caller_namespaces no longer
+have defaults. A module call that sets create_nexus_endpoint = false must now
+pass them explicitly.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+
+### Features
+
+* Require the inputs the provider requires ([5008d82](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/commit/5008d82cbcdbe48d0f90cf0d2fd00da9c5a0a475))
+
 ## [1.0.4](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/compare/v1.0.3...v1.0.4) (2026-08-01)
 
 ### Documentation
