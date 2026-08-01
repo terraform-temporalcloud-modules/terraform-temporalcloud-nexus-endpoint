@@ -49,7 +49,7 @@ for dir in examples/*/; do
 
   # Rewrite:
   #   source  = "terraform-temporalcloud-modules/nexus-endpoint/temporalcloud"
-  #   version = "~> 1.0"
+  #   version = "~> 2.0"
   # into:
   #   source = "<repo root>"
   #

@@ -26,7 +26,7 @@ locals {
 
 module "payments_namespace" {
   source  = "terraform-temporalcloud-modules/namespace/temporalcloud"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   name           = "${local.name}-payments"
   regions        = ["aws-us-east-1"]
@@ -38,7 +38,7 @@ module "payments_namespace" {
 
 module "web_namespace" {
   source  = "terraform-temporalcloud-modules/namespace/temporalcloud"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   name           = "${local.name}-web"
   regions        = ["aws-us-east-1"]
@@ -58,7 +58,7 @@ module "web_namespace" {
 
 module "nexus_endpoint" {
   source  = "terraform-temporalcloud-modules/nexus-endpoint/temporalcloud"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   name        = local.name
   description = "Payment authorisation and capture, served by the payments team"

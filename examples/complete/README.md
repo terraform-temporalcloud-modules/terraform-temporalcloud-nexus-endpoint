@@ -49,9 +49,9 @@ No providers.
 
 | Name | Source | Version |
 | ---- | ------ | ------- |
-| <a name="module_nexus_endpoint"></a> [nexus\_endpoint](#module\_nexus\_endpoint) | terraform-temporalcloud-modules/nexus-endpoint/temporalcloud | ~> 1.0 |
-| <a name="module_payments_namespace"></a> [payments\_namespace](#module\_payments\_namespace) | terraform-temporalcloud-modules/namespace/temporalcloud | ~> 1.0 |
-| <a name="module_web_namespace"></a> [web\_namespace](#module\_web\_namespace) | terraform-temporalcloud-modules/namespace/temporalcloud | ~> 1.0 |
+| <a name="module_nexus_endpoint"></a> [nexus\_endpoint](#module\_nexus\_endpoint) | terraform-temporalcloud-modules/nexus-endpoint/temporalcloud | ~> 2.0 |
+| <a name="module_payments_namespace"></a> [payments\_namespace](#module\_payments\_namespace) | terraform-temporalcloud-modules/namespace/temporalcloud | ~> 2.0 |
+| <a name="module_web_namespace"></a> [web\_namespace](#module\_web\_namespace) | terraform-temporalcloud-modules/namespace/temporalcloud | ~> 2.0 |
 
 ## Resources
 

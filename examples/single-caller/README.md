@@ -51,7 +51,7 @@ need them.
 
 | Name | Source | Version |
 | ---- | ------ | ------- |
-| <a name="module_nexus_endpoint"></a> [nexus\_endpoint](#module\_nexus\_endpoint) | terraform-temporalcloud-modules/nexus-endpoint/temporalcloud | ~> 1.0 |
+| <a name="module_nexus_endpoint"></a> [nexus\_endpoint](#module\_nexus\_endpoint) | terraform-temporalcloud-modules/nexus-endpoint/temporalcloud | ~> 2.0 |
 
 ## Resources
 

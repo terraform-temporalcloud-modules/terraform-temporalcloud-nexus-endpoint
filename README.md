@@ -77,7 +77,7 @@ The shape to prefer: no namespace ID is written by hand, so it cannot be written
 ```hcl
 module "payments_namespace" {
   source  = "terraform-temporalcloud-modules/namespace/temporalcloud"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   name = "payments-prod"
   # Region entitlements are per account and are a subset of the published list,
@@ -89,7 +89,7 @@ module "payments_namespace" {
 
 module "web_namespace" {
   source  = "terraform-temporalcloud-modules/namespace/temporalcloud"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   name           = "web-prod"
   regions        = ["aws-us-east-1"]
@@ -99,7 +99,7 @@ module "web_namespace" {
 
 module "payments_endpoint" {
   source  = "terraform-temporalcloud-modules/nexus-endpoint/temporalcloud"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   name        = "payments-prod"
   description = "Payment authorisation and capture"
@@ -132,7 +132,7 @@ data "temporalcloud_namespace" "web" {
 
 module "payments_endpoint" {
   source  = "terraform-temporalcloud-modules/nexus-endpoint/temporalcloud"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   name = "payments-prod"
 
@@ -153,7 +153,7 @@ Self-calls are not implicit. A namespace that is both the target and a caller ha
 ```hcl
 module "payments_endpoint" {
   source  = "terraform-temporalcloud-modules/nexus-endpoint/temporalcloud"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   name = "payments-prod"
 
@@ -203,7 +203,7 @@ anywhere a `for_each` on the module block is awkward:
 ```hcl
 module "nexus_endpoints" {
   source  = "terraform-temporalcloud-modules/nexus-endpoint/temporalcloud//wrappers"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   defaults = {
     allowed_caller_namespaces = ["web-prod.a1b2c"]

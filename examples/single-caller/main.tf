@@ -29,7 +29,7 @@ data "temporalcloud_namespace" "caller" {
 
 module "nexus_endpoint" {
   source  = "terraform-temporalcloud-modules/nexus-endpoint/temporalcloud"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   name = local.name
 
