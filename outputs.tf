@@ -17,8 +17,11 @@ output "nexus_endpoint_name" {
 
 output "nexus_endpoint_description" {
   description = "The description of the Nexus endpoint. Marked sensitive because the provider marks the underlying attribute sensitive; read it with `terraform output -raw` or `nonsensitive()`"
-  value       = try(temporalcloud_nexus_endpoint.this[0].description, "")
-  sensitive   = true
+  # coalesce() as well as try(): `description` is optional in the provider schema
+  # and comes back null when unset. try() only catches errors, so on its own it
+  # returns a null unchanged.
+  value     = try(coalesce(temporalcloud_nexus_endpoint.this[0].description, ""), "")
+  sensitive = true
 }
 
 ################################################################################
