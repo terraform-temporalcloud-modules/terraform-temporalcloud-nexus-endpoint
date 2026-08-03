@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/compare/v2.0.0...v2.0.1) (2026-08-03)
+
+### Documentation
+
+* Pin the examples to v2 ([163ac23](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/commit/163ac23e9231c2f52fe1a40f9eda27bdef30e5fa))
+
+### Tests
+
+* Coalesce null data source lists in the orphan check ([#1](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/issues/1)) ([f681fd6](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/commit/f681fd6530288ef6a3db4a37fc20d3dd0fb015e7))
+
 ## [2.0.0](https://github.com/terraform-temporalcloud-modules/terraform-temporalcloud-nexus-endpoint/compare/v1.0.4...v2.0.0) (2026-08-01)
 
 ### ⚠ BREAKING CHANGES
